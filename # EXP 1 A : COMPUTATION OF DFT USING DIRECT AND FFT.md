@@ -1,55 +1,127 @@
-# EXP 1 A : COMPUTATION OF DFT USING DIRECT AND FFT
 
-# AIM: 
+## EXP 1  : COMPUTATION OF DFT USING DIRECT AND FFT ALGORITHM
 
-# To Obtain DFT and FFT of a given sequence in SCILAB. 
+### AIM: 
 
-# APPARATUS REQUIRED: 
+ To Obtain DFT using Direct and FFT of a given sequence in SCILAB. 
+
+### APPARATUS REQUIRED: 
 PC installed with SCILAB. 
 
-# PROGRAM: 
-```
+### PROGRAM: 
+ ##### DISCRETE FOURIER TRANSFORM USING DIRECT METHOD
+ ```python
 clc;
 clear;
 
-// --- Input Signal ---
-x = [1 2 3 4];   
-N = length(x);
-n = 0:N-1;
+N = input("Length of the sequence N: ");
+x = input("Input sequence x(n): ");
 
-// --- Direct DFT (Formula Method) ---
-X_dft = zeros(1, N);
-for k = 0:N-1
-    for m = 0:N-1
-        X_dft(k+1) = X_dft(k+1) + x(m+1) * exp(-%i*2*%pi*k*m/N);
-    end
+if length(x) <> N then
+    error("Length of x(n) must be equal to N");
 end
 
-// --- FFT (Built-in Function) ---
-X_fft = fft(x, -1);
+X_direct = zeros(1, N);
 
-// --- Plots ---
+for k = 0:N-1
+    sum_val = 0;
+    for n = 0:N-1
+        sum_val = sum_val + x(n+1)*exp(-%i*2*%pi*k*n/N);
+    end
+    X_direct(k+1) = sum_val;
+end
+
+X_direct = clean(X_direct);
+
+disp("DFT using Direct Method:");
+disp(X_direct);
+
+mag = abs(X_direct);
+phase = atan(imag(X_direct), real(X_direct));
+
+disp("Magnitude Spectrum:");
+disp(mag);
+
+disp("Phase Spectrum (radians):");
+disp(phase);
+
+k = 0:N-1;
+clf;
+
+subplot(2,1,1);
+plot2d3(k, mag);
+title("Magnitude Spectrum of DFT");
+xlabel("k");
+ylabel("|X(k)|");
+
+subplot(2,1,2);
+plot2d3(k, phase);
+title("Phase Spectrum of DFT");
+xlabel("k");
+ylabel("∠X(k) (rad)");
+```
+##### DISCRETE FOURIER TRANSFORM USING FFT ALGORITHM
+
+```python
+clc;
+clear;
+
+N = input("Length of the sequence N: ");
+x = input("Enter input sequence x(n): ");
+if length(x) <> N then
+    error("Length of x(n) must be equal to N");
+end
+
+X_fft = fft(x);
+
+disp("DFT using FFT:");
+disp(X_fft);
+
+mag = abs(X_fft);
+phase = atan(imag(X_fft), real(X_fft));
+
+disp("Magnitude Spectrum:");
+disp(mag);
+
+disp("Phase Spectrum (radians):");
+disp(phase);
+
+k = 0:N-1;
+clf;
+
 subplot(3,1,1);
-plot2d3(n, x);   // discrete stem-like graph
-title("Input Signal x[n]");
-xlabel("n"); ylabel("x[n]");
+plot2d3(0:N-1, x);
+title("Input Sequence x(n)");
+xlabel("n");
+ylabel("Amplitude");
 
 subplot(3,1,2);
-plot2d3(n, abs(X_dft));   // DFT magnitude
-title("DFT Magnitude (Direct Method)");
-xlabel("k"); ylabel("|X[k]|");
+plot2d3(k, mag);
+title("Magnitude Spectrum");
+xlabel("k");
+ylabel("|X(k)|");
 
 subplot(3,1,3);
-plot2d3(n, abs(X_fft));   // FFT magnitude
-title("FFT Magnitude (Built-in)");
-xlabel("k"); ylabel("|X[k]|");
+plot2d3(k, phase);
+title("Phase Spectrum");
+xlabel("k");
+ylabel("∠X(k) (rad)");
 ```
 
-# OUTPUT:<img width="958" height="539" alt="image" src="https://github.com/user-attachments/assets/8e954162-2021-44b4-9bdd-a9d4b91e9cd0" />
+### OUTPUT: 
+ ##### DISCRETE FOURIER TRANSFORM USING DIRECT METHOD
+ 
+<img width="608" height="588" alt="Screenshot 2026-03-24 190727" src="https://github.com/user-attachments/assets/89e1efd3-3741-48c8-be9c-9641f98c4cf1" />
+
+<img width="595" height="598" alt="Screenshot 2026-03-24 190740" src="https://github.com/user-attachments/assets/7fb1ff5e-7b1d-41ea-af0a-1d753259d350" />
+
+
+##### DISCRETE FOURIER TRANSFORM USING FFT ALGORITHM
+<img width="550" height="505" alt="image" src="https://github.com/user-attachments/assets/24008bf4-6a64-4634-a9f2-86f144d43d42" />
+
+<img width="550" height="505" alt="Screenshot 2026-03-24 190905" src="https://github.com/user-attachments/assets/edc984c2-9b49-4019-806e-bc8cdfa85e68" />
 
 
 
-
-
-# RESULT: The DFT of the given sequence using Direct method and FFT method are obtained.
-Both methods give the same output spectrum, hence verified.
+### RESULT: 
+Thus, the Discrete Fourier Transform using Direct and Fast Fourier Transform of the given sequence were obtained and its magnitude and phase spectrum were plotted.
